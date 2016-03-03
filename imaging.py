@@ -46,7 +46,7 @@ while input("Type any key to create a picture or q to quit: ") != "q":
     print("Ctrl + C to exit")
 
     # Get valid height and width input from user
-    while(1):
+    while(True):
         try:
             width = int(input("Enter a width: "))
             height = int(input("Enter a height: "))
@@ -58,7 +58,7 @@ while input("Type any key to create a picture or q to quit: ") != "q":
 
     # Ask if user wants to specify starting RGB values or randomize
     userOption = input("Startin RGB values, (r)andom or (c)ustom: ")
-
+    
     # Random RGB values
     if userOption == "r":
         red = randint(0, 255)
@@ -68,7 +68,7 @@ while input("Type any key to create a picture or q to quit: ") != "q":
     # Custom RGB values, take in user input
     elif userOption == "c":
         # Loop until user gives valid input
-        while(not red and not green and not blue):
+        while(True):
             try:
                 red = int(input("Enter a red value: "))
                 green = int(input("Enter a green value: "))
@@ -114,7 +114,7 @@ while input("Type any key to create a picture or q to quit: ") != "q":
         # Threw an error, get the save number manually
         except Exception:
             # Loop until valid user input
-            while(1):
+            while(True):
                 try:
                     nextSaveNumber = int(input("Auto save failed, enter manual" +
                                                " starting save number: "))
@@ -145,12 +145,12 @@ while input("Type any key to create a picture or q to quit: ") != "q":
         img.show()
         
         # Loop until user gives valid input
-        while(1):
+        while(True):
             saveChoice = input("Would you like to save this image? (y)es or (n)o: ")
 
             # User wants to save image
             if saveChoice == "y":
-                while(1):
+                while(True):
                     # Get name of file
                     fileName = input("What would you like to name the file? ")
 
