@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#! python3
 
 # Author: Luke Thomas
 # Date: March 3, 2016
@@ -24,6 +25,12 @@ height = 0;
 
 # Volatility, the amount the colors change each cycle
 changeAmount = 0;
+
+# Used for user specifications
+rgbOption = ""
+settingsOption = ""
+overlap = False;
+separateVariance = True;
 
 # For valid input checks
 valid = False
@@ -57,16 +64,16 @@ while input("Type any key to create a picture or q to quit: ") != "q":
             print("Invalid width or height")
 
     # Ask if user wants to specify starting RGB values or randomize
-    userOption = input("Startin RGB values, (r)andom or (c)ustom: ")
+    rgbOption = input("Starting RGB values, (r)andom or (c)ustom: ")
     
     # Random RGB values
-    if userOption == "r":
+    if rgbOption == "r":
         red = randint(0, 255)
         green = randint(0, 255)
         blue = randint(0, 255)
 
     # Custom RGB values, take in user input
-    elif userOption == "c":
+    elif rgbOption == "c":
         # Loop until user gives valid input
         while(True):
             try:
@@ -77,6 +84,23 @@ while input("Type any key to create a picture or q to quit: ") != "q":
             except Exception:
                 print("Invalid input, try again")
 
+    settingsOption = input("(d)efault settings or (c)ustom: ")
+
+    # Default settings
+    if(settingsOption == "d"):
+        overlap = False
+        separateVariance = True
+
+    elif(settingsOption == "c"):
+        while(True):
+            try:
+                overlap = int(input("Enter (1) for overlap, (0) for no " +
+                                    "overlap: "))
+                separateVariance = int(input("Enter (1) for separate variance" +
+                                             ", (0) for no separate variance: "))
+                break
+            except Exception:
+                print("Invalid input, try again.")
 
     ######## Creating the image ########
 
@@ -91,10 +115,27 @@ while input("Type any key to create a picture or q to quit: ") != "q":
         # Draw the image
         for column in range(img.size[1]):
             for row in range(img.size[0]):
-                pixels[row, column] = (red, green, blue) # set the colour accordingly
-            red += randint(-changeAmount, changeAmount)
-            green += randint(-changeAmount, changeAmount)
-            blue += randint(-changeAmount, changeAmount)
+                # Set the color of the pixel
+                pixels[row, column] = (red, green, blue)
+
+            # Each color varies a separately
+            if(separateVariance):
+                red += randint(-changeAmount, changeAmount)
+                green += randint(-changeAmount, changeAmount)
+                blue += randint(-changeAmount, changeAmount)
+
+            # Each color varies by the same amount
+            else:
+                amount = randint(-changeAmount, changeAmount)
+                red += amount
+                green += amount
+                blue += amount
+
+            # If a color reaches max value (255), will be set to 0
+            if(overlap):
+                red = red % 255
+                green = green % 255
+                blue = blue % 255
         return img
 
     numImages = int(input("How many of these images would you" +
@@ -116,8 +157,9 @@ while input("Type any key to create a picture or q to quit: ") != "q":
             # Loop until valid user input
             while(True):
                 try:
-                    nextSaveNumber = int(input("Auto save failed, enter manual" +
-                                               " starting save number: "))
+                    nextSaveNumber = int(input("Auto save failed, enter " +
+                                               "manual starting save" +
+                                               " number: "))
                     break
                 except Exception:
                     print("Invalid input, try again.")
@@ -146,7 +188,8 @@ while input("Type any key to create a picture or q to quit: ") != "q":
         
         # Loop until user gives valid input
         while(True):
-            saveChoice = input("Would you like to save this image? (y)es or (n)o: ")
+            saveChoice = input("Would you like to save this image? " + 
+                               "(y)es or (n)o: ")
 
             # User wants to save image
             if saveChoice == "y":

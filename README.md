@@ -10,6 +10,8 @@ pixel-painted images. Also has functionality to create a single image and
 save it with a specific name, or create a bulk group of images with numbered
 names.
 
+IMPORTANT: MUST have python 3.4 and PILLOW python library installed.
+
 Possible Improvements for the future:
 - Create batches in separate folders instead of in the images folder
 - Enable the creation of images with different patterns
