@@ -3,6 +3,7 @@ Creates colorful randomized images
 
 
 Author: Luke Thomas
+
 Date: March 3, 2016
 
 Description: This program takes in user input to create randomly generated
