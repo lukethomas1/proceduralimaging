@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-#! python3
+#!/usr/bin/env python3
 
 # Author: Luke Thomas
 # Date: March 3, 2016
@@ -7,22 +6,27 @@
 from PIL import Image
 from random import randint
 
+RED = 0
+GREEN = 1
+BLUE = 2
+MAX_COLOR = 255
+
 def InitialColors(rgbOption):
     rgb = [0, 0, 0]
 
     # Random RGB values
     if(rgbOption == "r"):
         for color in range(0, len(rgb)):
-            rgb[color] = randint(0, 255)
+            rgb[color] = randint(0, MAX_COLOR)
 
     # Custom RGB values, take in user input
     elif(rgbOption == "c"):
         # Loop until user gives valid input
         while(True):
             try:
-                rgb[0] = int(input("Enter a red value: "))
-                rgb[1] = int(input("Enter a green value: "))
-                rgb[2] = int(input("Enter a blue value: "))
+                rgb[RED] = int(input("Enter a red value: "))
+                rgb[GREEN] = int(input("Enter a green value: "))
+                rgb[BLUE] = int(input("Enter a blue value: "))
                 break
             except Exception:
                 print("Invalid input, try again")
@@ -62,12 +66,19 @@ def NewImage(width, height, rgbCopy, changeAmount, separateVariance, overlap):
     for column in range(img.size[1]):
         for row in range(img.size[0]):
             # Set the color of the pixel
-            pixels[row, column] = (rgb[0], rgb[1], rgb[2])
+            pixels[row, column] = (rgb[RED], rgb[GREEN], rgb[BLUE])
 
         # Each color varies a separately
         if(separateVariance):
             for color in range(0, len(rgb)):
+                # Change color slightly based on volatility
                 rgb[color] += randint(-changeAmount, changeAmount)
+
+                # Dont let color go over 255 value
+                if(rgb[color] > MAX_COLOR):
+                    rgb[color] = MAX_COLOR
+                elif(rgb[color] < 0):
+                    rgb[color] = 0
 
         # Each color varies by the same amount
         else:
@@ -78,5 +89,5 @@ def NewImage(width, height, rgbCopy, changeAmount, separateVariance, overlap):
         # If a color reaches max value (255), will be set to 0
         if(overlap):
             for color in range(0, len(rgb)):
-                rgb[color] = rgb[color] % 255
+                rgb[color] = rgb[color] % MAX_COLOR
     return img

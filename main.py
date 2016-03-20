@@ -91,6 +91,6 @@ while input("Type any key to create a picture or q to quit: ") != "q":
 
     # Create the images and save them to the batch folder
     for number in range(1, imageAmount + 1):
-        img = create.NewImage(width, height, rgb, <div>volatility</div>,
+        img = create.NewImage(width, height, rgb, volatility,
                               separateVariance, overlap)
         img.save(batch + '/' + str(number) + '.bmp')
