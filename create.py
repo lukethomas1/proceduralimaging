@@ -50,44 +50,49 @@ def ImageSettings(settingsOption):
     return settings
 
 
-def NewImage(width, height, rgbCopy, changeAmount, separateVariance, overlap):
-    # Deep copy rgb values to avoid modifying the original array
+def NewImage(width, height, rgbCopy, changeAmount, separateVariance, overlap, numSquares):
+    # To hold copy of rgbCopy
     rgb = [0, 0, 0]
-    for color in range(0, len(rgb)):
-        rgb[color] = rgbCopy[color]
 
     # Create a new image
-    img = Image.new('RGB', (width, height), "black")
+    img = Image.new('RGB', (width * numSquares, height * numSquares), "black")
 
     # Get the pixels of the image
     pixels = img.load()
 
-    # Draw the image
-    for column in range(img.size[1]):
-        for row in range(img.size[0]):
-            # Set the color of the pixel
-            pixels[row, column] = (rgb[RED], rgb[GREEN], rgb[BLUE])
-
-        # Each color varies a separately
-        if(separateVariance):
+    # Draw multiple squares
+    for currentCol in range(numSquares):
+        for currentRow in range(numSquares):
+            # Deep copy rgb values to avoid modifying the original array
             for color in range(0, len(rgb)):
-                # Change color slightly based on volatility
-                rgb[color] += randint(-changeAmount, changeAmount)
+                rgb[color] = rgbCopy[color]
 
-                # Dont let color go over 255 value
-                if(rgb[color] > MAX_COLOR):
-                    rgb[color] = MAX_COLOR
-                elif(rgb[color] < 0):
-                    rgb[color] = 0
+            # Draw the image
+            for column in range(currentCol * width, (currentCol + 1) * width):
+                for row in range(currentRow * height, (currentRow + 1) * height):
+                    # Set the color of the pixel
+                    pixels[row, column] = (rgb[RED], rgb[GREEN], rgb[BLUE])
 
-        # Each color varies by the same amount
-        else:
-            amount = randint(-changeAmount, changeAmount)
-            for color in range(0, len(rgb)):
-                rgb[color] += amount
+                # Each color varies a separately
+                if(separateVariance):
+                    for color in range(len(rgb)):
+                        # Change color slightly based on volatility
+                        rgb[color] += randint(-changeAmount, changeAmount)
 
-        # If a color reaches max value (255), will be set to 0
-        if(overlap):
-            for color in range(0, len(rgb)):
-                rgb[color] = rgb[color] % MAX_COLOR
+                        # Dont let color go over 255 value
+                        if(rgb[color] > MAX_COLOR):
+                            rgb[color] = MAX_COLOR
+                        elif(rgb[color] < 0):
+                            rgb[color] = 0
+
+                # Each color varies by the same amount
+                else:
+                    amount = randint(-changeAmount, changeAmount)
+                    for color in range(en(rgb)):
+                        rgb[color] += amount
+
+                # If a color reaches max value (255), will be set to 0
+                if(overlap):
+                    for color in range(len(rgb)):
+                        rgb[color] = rgb[color] % MAX_COLOR
     return img

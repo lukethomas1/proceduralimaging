@@ -20,8 +20,9 @@ import create
 rgb = [0, 0, 0]
 
 # Variables for dimensions of image
-width = 0;
-height = 0;
+width = 0
+height = 0
+numSquares = 1
 
 # Volatility, the amount the colors change each cycle
 volatility = 0;
@@ -51,9 +52,15 @@ while input("Type any key to create a picture or q to quit: ") != "q":
     # Get valid height and width input from user
     while(True):
         try:
-        	# Get width and height
-            width = int(input("Enter a width: "))
-            height = int(input("Enter a height: "))
+            numSquares = int(input("How many squares: "))
+            if(numSquares != 1):
+                width = int(input("Enter width of squares: "))
+                height = int(input("Enter height of squares: "))
+
+            else:
+            	# Get width and height
+                width = int(input("Enter a width: "))
+                height = int(input("Enter a height: "))
 
             # Get volatility
             volatility = int(input("Enter volatility: "))
@@ -66,7 +73,8 @@ while input("Type any key to create a picture or q to quit: ") != "q":
 
             # Make sure input is valid
             if((rgbOption != "r" and rgbOption != "c") or
-               (settingsOption != "d" and settingsOption != "c")):
+               (settingsOption != "d" and settingsOption != "c") or
+               (numSquares <= 0)):
                 raise ValueError()
             valid = True
 
@@ -92,5 +100,5 @@ while input("Type any key to create a picture or q to quit: ") != "q":
     # Create the images and save them to the batch folder
     for number in range(1, imageAmount + 1):
         img = create.NewImage(width, height, rgb, volatility,
-                              separateVariance, overlap)
+                              separateVariance, overlap, numSquares)
         img.save(batch + '/' + str(number) + '.bmp')
