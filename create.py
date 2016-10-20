@@ -2,6 +2,7 @@
 
 # Author: Luke Thomas
 # Date: March 3, 2016
+# Description: Methods used in main.py to create images
 
 from PIL import Image
 from random import randint
